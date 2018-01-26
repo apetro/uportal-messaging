@@ -3,10 +3,6 @@ package edu.wisc.my.messages.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.wisc.my.messages.model.MessageArray;
-import edu.wisc.my.messages.model.Message;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +20,7 @@ public class MessagesController {
     private MessagesService messagesService;
     
     @RequestMapping(value="/messages", method=RequestMethod.GET)
-    public @ResponseBody void getAllMessages(HttpServletRequest request,
+    public @ResponseBody void messages(HttpServletRequest request,
         HttpServletResponse response) {
             JSONObject json = messagesService.getRawMessages();
             response.setContentType("application/json");
@@ -36,8 +32,8 @@ public class MessagesController {
             }
         }
 
-    @RequestMapping(value = "/datedMessages", method = RequestMethod.GET)
-    public @ResponseBody void getDatedMessages(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/currentMessages", method = RequestMethod.GET)
+    public @ResponseBody void currentMessages(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
         JSONObject messages = messagesService.getDateFilteredMessages();
         try {

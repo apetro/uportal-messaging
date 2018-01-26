@@ -10,8 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+
 /**
  * Message
  */
@@ -20,9 +19,6 @@ import org.springframework.core.env.Environment;
 public class Message   {
 
   protected final Logger logger = LoggerFactory.getLogger(getClass());
-
-  @Autowired
-  private Environment env;
 
   @JsonProperty("id")
   private String id = null;
@@ -323,13 +319,7 @@ public class Message   {
    // Placeholder date format string, 
    // can be overridden with an application property.
    String formatString = "yyyy-mm-dd";
-   
-   if(env == null){
-     logger.error("NO ENV VARIABLE");
-   } else {
-      formatString = env.getProperty("default.date.format");
-   }
-    
+
    try{ 
    //If there's no date specified, the message is valid.
    if(StringUtils.isBlank(getGoLiveDate()) && 

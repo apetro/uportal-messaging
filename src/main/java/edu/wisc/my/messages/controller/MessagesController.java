@@ -36,28 +36,14 @@ public class MessagesController {
             }
         }
 
-    @RequestMapping(value="/datedMessages", method=RequestMethod.GET)    
-    public @ResponseBody void getDatedMessages(HttpServletRequest request,
-      HttpServletResponse response) {
+    @RequestMapping(value = "/datedMessages", method = RequestMethod.GET)
+    public @ResponseBody void getDatedMessages(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
-        JSONObject rawMessages = messagesService.getRawMessages();
-        JSONObject validMessages = new JSONObject();
-        JSONArray  validMessageArray = new JSONArray();
-        ObjectMapper mapper = new ObjectMapper();
-
-        try{
-            MessageArray messageArray = mapper.readValue(rawMessages.toString(), MessageArray.class);
-            for(Message message:messageArray.getMessages()) {
-                if(message.isValidToday()) {
-                    JSONObject validMessage = new JSONObject(mapper.writeValueAsString(message));
-                    validMessageArray.put(validMessage);
-                }
-            }
-            validMessages.put("messages", validMessageArray);
-            response.getWriter().write(validMessages.toString());
+        JSONObject messages = messagesService.getDateFilteredMessages();
+        try {
+            response.getWriter().write(messages.toString());
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
-            logger.warn("Date filter failure " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

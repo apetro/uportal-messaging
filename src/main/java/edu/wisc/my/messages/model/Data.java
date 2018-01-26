@@ -19,10 +19,10 @@ public class Data   {
   private Object dataArrayFilter = null;
 
   @JsonProperty("dataMessageTitle")
-  private String dataMessageTitle = null;
+  private String[] dataMessageTitle = null;
 
   @JsonProperty("dataMessageMoreInfoUrl")
-  private String dataMessageMoreInfoUrl = null;
+  private String[] dataMessageMoreInfoUrl = null;
 
   public Data dataUrl(String dataUrl) {
     this.dataUrl = dataUrl;
@@ -63,29 +63,29 @@ public class Data   {
     this.dataArrayFilter = dataArrayFilter;
   }
 
-  public Data dataMessageTitle(String dataMessageTitle) {
+  public Data dataMessageTitle(String[] dataMessageTitle) {
     this.dataMessageTitle = dataMessageTitle;
     return this;
   }
 
-  public String getDataMessageTitle() {
+  public String[] getDataMessageTitle() {
     return dataMessageTitle;
   }
 
-  public void setDataMessageTitle(String dataMessageTitle) {
+  public void setDataMessageTitle(String[] dataMessageTitle) {
     this.dataMessageTitle = dataMessageTitle;
   }
 
-  public Data dataMessageMoreInfoUrl(String dataMessageMoreInfoUrl) {
+  public Data dataMessageMoreInfoUrl(String[] dataMessageMoreInfoUrl) {
     this.dataMessageMoreInfoUrl = dataMessageMoreInfoUrl;
     return this;
   }
 
-  public String getDataMessageMoreInfoUrl() {
+  public String[] getDataMessageMoreInfoUrl() {
     return dataMessageMoreInfoUrl;
   }
 
-  public void setDataMessageMoreInfoUrl(String dataMessageMoreInfoUrl) {
+  public void setDataMessageMoreInfoUrl(String[] dataMessageMoreInfoUrl) {
     this.dataMessageMoreInfoUrl = dataMessageMoreInfoUrl;
   }
 

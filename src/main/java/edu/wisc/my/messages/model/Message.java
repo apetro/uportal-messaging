@@ -1,16 +1,29 @@
 package edu.wisc.my.messages.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import org.apache.commons.lang.StringUtils;
+import javax.validation.constraints.NotNull;
 
-import javax.validation.constraints.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 /**
  * Message
  */
 
 
 public class Message   {
+
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
+
+  @Autowired
+  private Environment env;
+
   @JsonProperty("id")
   private String id = null;
 
@@ -19,6 +32,9 @@ public class Message   {
 
   @JsonProperty("titleShort")
   private String titleShort = null;
+
+  @JsonProperty("titleUrl")
+  private String titleUrl = null;
 
   @JsonProperty("description")
   private String description = null;
@@ -53,13 +69,13 @@ public class Message   {
   @JsonProperty("data")
   private Data data = null;
 
-  @JsonProperty("ActionButton")
+  @JsonProperty("actionButton")
   private ActionButton actionButton = null;
 
-  @JsonProperty("MoreInfoButton")
+  @JsonProperty("moreInfoButton")
   private ActionButton moreInfoButton = null;
 
-  @JsonProperty("ConfirmButton")
+  @JsonProperty("confirmButton")
   private ActionButton confirmButton = null;
 
   public Message id(String id) {
@@ -108,6 +124,14 @@ public class Message   {
 
   public void setTitleShort(String titleShort) {
     this.titleShort = titleShort;
+  }
+
+  public String getTitleUrl() {
+    return titleUrl;
+  }
+
+  public void setTitleUrl(String titleUrl) {
+    this.titleUrl = titleUrl;
   }
 
   public Message description(String description) {
@@ -291,6 +315,55 @@ public class Message   {
   public void setConfirmButton(ActionButton confirmButton) {
     this.confirmButton = confirmButton;
   }
+  
+  public boolean isValidToday(){
+
+   Date today = new Date();
+   
+   // Placeholder date format string, 
+   // can be overridden with an application property.
+   String formatString = "yyyy-mm-dd";
+   
+   if(env == null){
+     logger.error("NO ENV VARIABLE");
+   } else {
+      formatString = env.getProperty("default.date.format");
+   }
+    
+   try{ 
+   //If there's no date specified, the message is valid.
+   if(StringUtils.isBlank(getGoLiveDate()) && 
+     StringUtils.isBlank(getExpireDate())) {
+       return true;
+     }
+
+  SimpleDateFormat defaultFormatter = new SimpleDateFormat(formatString);
+
+  String goLive = getGoLiveDate();
+  String expiration = getExpireDate();
+  
+  // If the message has no goLiveDate, we presume it to have been valid 
+  // since the beginning of time. Or 1977. Whichever came first.
+  String startDateString= (StringUtils.isNotBlank(goLive)) ? 
+       goLive : "1977-08-16";
+
+  // If the message has no expirationDate, we presume it will be valid until 
+  // the end of time. Or until we have a Y4K problem. Whichever comes first.       
+  String endDateString= (StringUtils.isNotBlank(expiration)) ?
+       expiration : "3999-12-31";
+
+   Date startDate = defaultFormatter.parse(startDateString);
+   Date endDate = defaultFormatter.parse(endDateString);
+
+    if(today.after(startDate) && today.before(endDate)) {
+      return true;
+    }
+   } catch (Exception e) {
+     logger.warn("DATE ERROR " + this.id + " " + e.getMessage());
+   }
+
+    return false;
+ }
 
 
   @Override
@@ -307,6 +380,7 @@ public class Message   {
         Objects.equals(this.titleShort, message.titleShort) &&
         Objects.equals(this.description, message.description) &&
         Objects.equals(this.descriptionShort, message.descriptionShort) &&
+        Objects.equals(this.titleUrl, message.titleUrl) &&
         Objects.equals(this.messageType, message.messageType) &&
         Objects.equals(this.goLiveDate, message.goLiveDate) &&
         Objects.equals(this.expireDate, message.expireDate) &&
@@ -323,7 +397,7 @@ public class Message   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, titleShort, description, descriptionShort, messageType, goLiveDate, expireDate, featureImageUrl, priority, recurrence, dismissible, audienceFilter, data, actionButton, moreInfoButton, confirmButton);
+    return Objects.hash(id, title, titleShort, description, descriptionShort, titleUrl, messageType, goLiveDate, expireDate, featureImageUrl, priority, recurrence, dismissible, audienceFilter, data, actionButton, moreInfoButton, confirmButton);
   }
 
   @Override
@@ -336,6 +410,7 @@ public class Message   {
     sb.append("    titleShort: ").append(toIndentedString(titleShort)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    descriptionShort: ").append(toIndentedString(descriptionShort)).append("\n");
+    sb.append("    titleUrl: ").append(toIndentedString(titleUrl)).append("\n");
     sb.append("    messageType: ").append(toIndentedString(messageType)).append("\n");
     sb.append("    goLiveDate: ").append(toIndentedString(goLiveDate)).append("\n");
     sb.append("    expireDate: ").append(toIndentedString(expireDate)).append("\n");

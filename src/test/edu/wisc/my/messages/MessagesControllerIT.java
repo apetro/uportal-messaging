@@ -1,4 +1,4 @@
-package hello;
+package edu.wisc.my.messages;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -14,10 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.hamcrest.core.StringContains;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class HelloControllerIT {
+public class MessagesControllerIT {
 
     @LocalServerPort
     private int port;
@@ -33,9 +34,9 @@ public class HelloControllerIT {
     }
 
     @Test
-    public void getHello() throws Exception {
+    public void siteIsUp() throws Exception {
         ResponseEntity<String> response = template.getForEntity(base.toString(),
                 String.class);
-        assertThat(response.getBody(), equalTo("Greetings from Spring Boot!"));
+        assertThat(response.getBody(), StringContains.containsString("status"));
     }
 }

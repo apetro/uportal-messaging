@@ -29,4 +29,11 @@ public class MeesagesControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(StringContains.containsString("status")));
     }
+
+    @Test
+    public void allMessages() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/messages").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(StringContains.containsString("titleShort")));
+    }
 }

@@ -2,7 +2,9 @@
 
 ## uportal-messages
 
-This microservice is intended for use 
+This messaging microservice is intended for use with [uportal-home]("https://github.com/uPortal-Project/uportal-home").
+
+uPortal messages include both notifications and announcements, and can be tailored for audiences as small as one person. 
 
 **
 

@@ -1,0 +1,54 @@
+**
+
+## uportal-messages
+
+This microservice is intended for use 
+
+**
+
+## Endpoints
+
+**
+
+### {*/*}
+
+calls:
+```java 
+    @RequestMapping("/")
+    public @ResponseBody
+    void index(HttpServletResponse response)   
+```
+returns:
+
+```
+{"status":"up"}
+```
+description:
+This endpoint returns a small json object indicating that the status of the application is healthy. 
+
+### {*/messages*}
+
+calls:
+``` java
+   @RequestMapping(value="/messages", method=RequestMethod.GET)
+    public @ResponseBody void messages(HttpServletRequest request,
+        HttpServletResponse response) 
+```
+returns:
+A json object containing every known message, unfiltered by group or date, and with data URLs unresolved. 
+
+description:
+Intended for admin and debugging use.
+
+### {*/currentMessages*}
+calls:
+``` java
+    @RequestMapping(value = "/currentMessages", method = RequestMethod.GET)
+    public @ResponseBody void currentMessages(HttpServletRequest request, HttpServletResponse response) 
+```
+
+returns:
+A json object, containing every known message which is valid for the current system date of the microservice's host. 
+
+description:
+An interim method, the functionality of which is to be folded into more robust filtering when authentication is implemented. 

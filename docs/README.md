@@ -19,6 +19,12 @@ Set the source of your messages in the ``application.properties`` file. In this 
 message.source=classpath:messages.json
 ```
 
+## To Build
+
+This project uses maven. ```$ mvn package ``` will build a warfile for deployment. 
+
+To run locally, ```$ mvn spring-boot:run ``` will compile and run this microservice. 
+
 ## Endpoints
 
 

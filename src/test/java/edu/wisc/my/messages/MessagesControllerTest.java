@@ -18,7 +18,7 @@ import org.hamcrest.core.StringContains;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MeesagesControllerTest {
+public class MessagesControllerTest {
 
     @Autowired
     private MockMvc mvc;

@@ -28,7 +28,7 @@ public class MessagesService {
     @Autowired
     private Environment env;
 
-    public JSONObject getRawMessages() {
+    public JSONObject allMessages() {
         try {
             Resource resource = resourceLoader.getResource(env.getProperty("message.source"));
             InputStream is = resource.getInputStream();
@@ -45,8 +45,8 @@ public class MessagesService {
         }
     }
 
-    public JSONObject getDateFilteredMessages() {
-        JSONObject rawMessages = getRawMessages();
+    public JSONObject filteredMessages() {
+        JSONObject rawMessages = allMessages();
         JSONObject validMessages = new JSONObject();
         JSONArray validMessageArray = new JSONArray();
         ObjectMapper mapper = new ObjectMapper();

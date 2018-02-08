@@ -22,7 +22,7 @@ public class MessagesController {
     @RequestMapping(value="/messages", method=RequestMethod.GET)
     public @ResponseBody void messages(HttpServletRequest request,
         HttpServletResponse response) {
-            JSONObject json = messagesService.getRawMessages();
+            JSONObject json = messagesService.allMessages();
             response.setContentType("application/json");
             try {
                 response.getWriter().write(json.toString());
@@ -35,7 +35,7 @@ public class MessagesController {
     @RequestMapping(value = "/currentMessages", method = RequestMethod.GET)
     public @ResponseBody void currentMessages(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
-        JSONObject messages = messagesService.getDateFilteredMessages();
+        JSONObject messages = messagesService.filteredMessages();
         try {
             response.getWriter().write(messages.toString());
             response.setStatus(HttpServletResponse.SC_OK);

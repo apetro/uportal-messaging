@@ -1,4 +1,4 @@
-package edu.wisc.my.messages;
+package edu.wisc.my.messages.controller;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -18,7 +18,7 @@ import org.hamcrest.core.StringContains;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MeesagesControllerTest {
+public class MessagesControllerTest {
 
     @Autowired
     private MockMvc mvc;

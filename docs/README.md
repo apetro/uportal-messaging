@@ -1,4 +1,4 @@
-## uportal-messages
+# uportal-messages
 
 This messaging microservice is intended for use with [uportal-home](https://github.com/uPortal-Project/uportal-home).
 

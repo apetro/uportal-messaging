@@ -1,10 +1,10 @@
 package edu.wisc.my.messages.model;
 
-import java.util.Objects;
+import java.util.*;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.ArrayList;
-import java.util.List;
+
 import javax.validation.constraints.*;
 /**
  * AudienceFilter
@@ -70,5 +70,14 @@ public class AudienceFilter   {
     }
     return o.toString().replace("\n", "\n    ");
   }
-}
 
+  public boolean matches(User user) {
+
+    Set<String> requireAtLeastOneOfTheseGroups = new HashSet<>();
+    requireAtLeastOneOfTheseGroups.addAll(this.groups);
+
+    requireAtLeastOneOfTheseGroups.retainAll(user.getGroups());
+
+    return ( ! requireAtLeastOneOfTheseGroups.isEmpty());
+  }
+}

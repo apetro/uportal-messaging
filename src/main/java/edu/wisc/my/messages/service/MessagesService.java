@@ -1,9 +1,13 @@
 package edu.wisc.my.messages.service;
 
 import java.io.InputStream;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
+import edu.wisc.my.messages.data.MessagesFromTextFile;
+import edu.wisc.my.messages.model.User;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,20 +26,17 @@ import edu.wisc.my.messages.model.MessageArray;
 public class MessagesService {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private ResourceLoader resourceLoader;
-
-    @Autowired
-    private Environment env;
+    private MessagesFromTextFile messageSource;
 
     public JSONObject allMessages() {
         try {
-            Resource resource = resourceLoader.getResource(env.getProperty("message.source"));
-            InputStream is = resource.getInputStream();
-            String jsonTxt = IOUtils.toString(is, "UTF-8");
-            JSONObject json = new JSONObject(jsonTxt);
+            List<Message> allMessages = messageSource.allMessages();
 
-            return json;
+            JSONArray jsonMessageArray = new JSONArray(allMessages);
+            JSONObject messagesJson = new JSONObject();
+            messagesJson.put("messages", jsonMessageArray);
+
+            return messagesJson;
 
         } catch (Exception e) {
             logger.warn("service exception " + e.getMessage());
@@ -46,16 +47,14 @@ public class MessagesService {
     }
 
     public JSONObject filteredMessages() {
-        JSONObject rawMessages = allMessages();
         JSONObject validMessages = new JSONObject();
         JSONArray validMessageArray = new JSONArray();
         ObjectMapper mapper = new ObjectMapper();
 
         try {
-            MessageArray messageArray = mapper.readValue(rawMessages.toString(), MessageArray.class);
-            for (Message message : messageArray.getMessages()) {
+            for (Message message : messageSource.allMessages()) {
                 if (message.isValidToday()) {
-                    JSONObject validMessage = new JSONObject(mapper.writeValueAsString(message));
+                    JSONObject validMessage = new JSONObject(message);
                     validMessageArray.put(validMessage);
                 }
             }
@@ -65,6 +64,11 @@ public class MessagesService {
             return null;
         }
         return validMessages;
+    }
+
+    @Autowired
+    public void setMessageSource(MessagesFromTextFile messageSource) {
+        this.messageSource = messageSource;
     }
 }
      

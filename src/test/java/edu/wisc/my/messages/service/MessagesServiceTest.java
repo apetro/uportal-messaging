@@ -3,7 +3,7 @@ package edu.wisc.my.messages.service;
 import edu.wisc.my.messages.data.MessagesFromTextFile;
 import edu.wisc.my.messages.model.AudienceFilter;
 import edu.wisc.my.messages.model.Message;
-// import edu.wisc.my.messages.model.User;
+import edu.wisc.my.messages.model.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Ignore;
@@ -63,7 +63,6 @@ public class MessagesServiceTest {
      * Test that filters away messages with AudienceFilters reporting no match.
      */
     @Test
-    @Ignore
     public void includesOnlyMessagesMatchingAudienceFilters() {
         MessagesService service = new MessagesService();
 
@@ -87,9 +86,9 @@ public class MessagesServiceTest {
 
         service.setMessageSource(messageSource);
 
-        //User user = new User();
+        User user = new User();
 
-        JSONObject result = null; //service.filteredMessages(user);
+        JSONObject result = service.filteredMessages(user);
 
         assertNotNull(result);
 

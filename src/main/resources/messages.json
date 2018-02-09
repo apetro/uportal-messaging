@@ -262,6 +262,33 @@
           "label": "More info"
         },
         "confirmButton": null
+      },
+      {
+        "id": "has-no-audience-filter",
+        "title": "An announcement lacking an audience filter.",
+        "titleShort": "Not filtered by audience",
+        "description": "This announcement is not filtered by groups.",
+        "descriptionShort": "Not filtered by groups.",
+        "messageType": "announcement",
+        "goLiveDate": null,
+        "expireDate": null,
+        "featureImageUrl": null,
+        "priority": null,
+        "audienceFilter": null,
+        "data": {
+          "dataUrl": null,
+          "dataObject": null,
+          "dataArrayFilter": null
+        },
+        "actionButton": {
+          "label": "Add to home",
+          "url": "addToHome/open-apereo"
+        },
+        "moreInfoButton": {
+          "url": "https://www.apereo.org/content/2018-open-apereo-montreal-quebec",
+          "label": "More info"
+        },
+        "confirmButton": null
       }
     ]
   }

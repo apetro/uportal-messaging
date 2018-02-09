@@ -46,21 +46,27 @@ public class MessagesService {
         }
     }
 
-    public JSONObject filteredMessages() {
+    public JSONObject filteredMessages(User user) {
         JSONObject validMessages = new JSONObject();
         JSONArray validMessageArray = new JSONArray();
         ObjectMapper mapper = new ObjectMapper();
 
+        // needed this to get unit test working to support refactoring JSON out of the service layer
+        // at which point won't need this to unit test service layer.
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
         try {
             for (Message message : messageSource.allMessages()) {
-                if (message.isValidToday()) {
+                if (message.isValidToday()
+                        && ((null == message.getAudienceFilter() || message.getAudienceFilter().matches(user) ) )
+                    ) {
                     JSONObject validMessage = new JSONObject(message);
                     validMessageArray.put(validMessage);
                 }
             }
             validMessages.put("messages", validMessageArray);
         } catch (Exception e) {
-            logger.warn("Date filter failure " + e.getMessage());
+            logger.warn("Date filter failure ", e);
             return null;
         }
         return validMessages;

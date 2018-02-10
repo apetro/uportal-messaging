@@ -19,28 +19,42 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Understands what HTTP requests are asking about messages, queries the
+ * MessagesService accordingly, and replies in JSON.
+ */
 @Controller
 public class MessagesController {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private MessagesService messagesService;
     private IsMemberOfHeaderParser isMemberOfHeaderParser;
-    
-    @RequestMapping(value="/messages", method=RequestMethod.GET)
-    public @ResponseBody void messages(HttpServletRequest request,
-        HttpServletResponse response) {
-            JSONObject json = messagesService.allMessages();
-            response.setContentType("application/json");
-            try {
-                response.getWriter().write(json.toString());
-                response.setStatus(HttpServletResponse.SC_OK);
-            } catch (Exception e) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            }
-        }
 
-    @RequestMapping(value = "/currentMessages", method = RequestMethod.GET)
-    public @ResponseBody void currentMessages(HttpServletRequest request, HttpServletResponse response) {
+    /**
+     * Messages filtered to the context of the request.
+     *
+     * Expects user group memberships as isMemberOf header with
+     * semicolon-delimited values. Fails gracefully in absence of this header.
+     *
+     * The details of the filtering are NOT a semantically versioned aspect of
+     * this API. That is, the microservice can get more sophisticated at
+     * filtering and this will be considered a MINOR rather than MAJOR
+     * (breaking) change.
+     *
+     * As currently implemented, EXCLUDES messages that are ANY of
+     *
+     * <ul>
+     * <li>premature per not-before metadata on the message</li>
+     * <li>expired per not-after metadata on the message</li>
+     * <li>limited to groups none of which include the requesting user</li>
+     * </ul>
+     *
+     * @param request
+     * @param response
+     */
+    @RequestMapping(value = "/messages", method = RequestMethod.GET)
+    public @ResponseBody void currentMessages(HttpServletRequest request,
+                                              HttpServletResponse response) {
         response.setContentType("application/json");
 
         String isMemberOfHeader = request.getHeader("isMemberOf");
@@ -56,6 +70,19 @@ public class MessagesController {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
+
+    @RequestMapping(value="/allMessages", method=RequestMethod.GET)
+    public @ResponseBody void messages(HttpServletRequest request,
+        HttpServletResponse response) {
+            JSONObject json = messagesService.allMessages();
+            response.setContentType("application/json");
+            try {
+                response.getWriter().write(json.toString());
+                response.setStatus(HttpServletResponse.SC_OK);
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
+        }
 
     @RequestMapping("/")
     public @ResponseBody

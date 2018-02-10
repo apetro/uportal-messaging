@@ -52,12 +52,33 @@ calls:
         HttpServletResponse response) 
 ```
 returns:
-A json object containing every known message, unfiltered by group or date, and with data URLs unresolved. 
+A JSON object containing messages filtered to the viewing user and the current context.
 
 description:
-Intended for admin and debugging use.
+Intended as the primary endpoint for servicing typical users. The idea is to move all the complication of message 
+resolution server-side into this microservice so that a typical client can request this data and uncritically render it.
 
-### {*/currentMessages*}
+Currently filters to:
+
++ Applicable to the current date. (Messages can have not-before and not-after dates.), AND
++ Applicable to the user's groups. (Messages can be limited to user groups.)
+
+Expectations:
+
++ `isMemberOf` header conveying semicolon-delimited group memberships. (This practice is typical in UW-Madison 
+Shibboleth SP implementation.) Fails gracefully yet safely: if this header is not present, considers the user a member 
+of no groups.
+
+Versioning:
+The details of the filtering are NOT a semantically versioned aspect of the API. That is to say, what is versioned
+here is that `/messages` returns the messages appropriate for the requesting user. Increasing sophistication in what 
+"appropriate" means is not a breaking change.
+
+Security:
+WARNING: Does not apply any access control other than filtering to messages applicable to the user's groups. If 
+additional access control is needed (it may not be needed), implement it at the container layer. 
+
+### {*/allMessages*}
 calls:
 ``` java
     @RequestMapping(value = "/currentMessages", method = RequestMethod.GET)
@@ -65,7 +86,11 @@ calls:
 ```
 
 returns:
-A json object, containing every known message which is valid for the current system date of the microservice's host. 
+A JSON object, containing every known message, regardless of all criteria. 
 
 description:
-An interim method, the functionality of which is to be folded into more robust filtering when authentication is implemented. 
+Intended as an administrative or troubleshooting view on the data.
+
+Security:
+WARNING: Does not apply any access control. Implement access control at the container layer. Whatever access control
+is appropriate, apply it to the `/allMessages` path at e.g. the `httpd` layer.

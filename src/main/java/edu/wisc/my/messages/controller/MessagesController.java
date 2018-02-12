@@ -58,7 +58,8 @@ public class MessagesController {
         response.setContentType("application/json");
 
         String isMemberOfHeader = request.getHeader("isMemberOf");
-        Set<String> groups = isMemberOfHeaderParser.groupsFromHeaderValue(isMemberOfHeader);
+        Set<String> groups =
+                isMemberOfHeaderParser.groupsFromHeaderValue(isMemberOfHeader);
         User user = new User();
         user.setGroups(groups);
 
@@ -105,7 +106,8 @@ public class MessagesController {
     }
 
     @Autowired
-    public void setIsMemberOfHeaderParser(IsMemberOfHeaderParser isMemberOfHeaderParser) {
+    public void setIsMemberOfHeaderParser(
+            IsMemberOfHeaderParser isMemberOfHeaderParser) {
         this.isMemberOfHeaderParser = isMemberOfHeaderParser;
     }
 

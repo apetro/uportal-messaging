@@ -3,6 +3,8 @@ package edu.wisc.my.messages.model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang.StringUtils;
 import javax.validation.constraints.NotNull;
 
@@ -311,7 +313,8 @@ public class Message   {
   public void setConfirmButton(ActionButton confirmButton) {
     this.confirmButton = confirmButton;
   }
-  
+
+  @JsonIgnore
   public boolean isValidToday(){
 
    Date today = new Date();

@@ -9,34 +9,34 @@ import static org.junit.Assert.*;
 
 public class AudienceFilterTest {
 
-    @Test
-    public void matchesWhenUserIsInAMatchingGroup() {
-        AudienceFilter filter = new AudienceFilter();
-        filter.addGroupsItem("matchingGroup");
-        filter.addGroupsItem("someOtherGroup");
+  @Test
+  public void matchesWhenUserIsInAMatchingGroup() {
+    AudienceFilter filter = new AudienceFilter();
+    filter.addGroupsItem("matchingGroup");
+    filter.addGroupsItem("someOtherGroup");
 
-        final User user = new User();
-        Set<String> groups = new HashSet<>();
-        groups.add("matchingGroup");
-        groups.add("unrelatedGroup");
-        user.setGroups(groups);
+    final User user = new User();
+    Set<String> groups = new HashSet<>();
+    groups.add("matchingGroup");
+    groups.add("unrelatedGroup");
+    user.setGroups(groups);
 
-        assertTrue(filter.test(user));
-    }
+    assertTrue(filter.test(user));
+  }
 
-    @Test
-    public void doesNotMatchWhenUserIsInNoMatchingGroup() {
-        AudienceFilter filter = new AudienceFilter();
-        filter.addGroupsItem("someGroup");
-        filter.addGroupsItem("someOtherGroup");
+  @Test
+  public void doesNotMatchWhenUserIsInNoMatchingGroup() {
+    AudienceFilter filter = new AudienceFilter();
+    filter.addGroupsItem("someGroup");
+    filter.addGroupsItem("someOtherGroup");
 
-        final User user = new User();
-        Set<String> groups = new HashSet<>();
-        groups.add("notMatchingGroup");
-        groups.add("unrelatedGroup");
-        user.setGroups(groups);
+    final User user = new User();
+    Set<String> groups = new HashSet<>();
+    groups.add("notMatchingGroup");
+    groups.add("unrelatedGroup");
+    user.setGroups(groups);
 
-        assertFalse(filter.test(user));
-    }
+    assertFalse(filter.test(user));
+  }
 
 }

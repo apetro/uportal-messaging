@@ -19,31 +19,31 @@ import java.util.List;
 @Repository
 public class MessagesFromTextFile {
 
-    @Autowired
-    private ResourceLoader resourceLoader;
+  @Autowired
+  private ResourceLoader resourceLoader;
 
-    @Autowired
-    private Environment env;
+  @Autowired
+  private Environment env;
 
-    public List<Message> allMessages() {
+  public List<Message> allMessages() {
 
-        try {
-            Resource resource = resourceLoader.getResource(env.getProperty("message.source"));
-            InputStream is = resource.getInputStream();
-            String jsonTxt = IOUtils.toString(is, "UTF-8");
-            JSONObject json = new JSONObject(jsonTxt);
+    try {
+      Resource resource = resourceLoader.getResource(env.getProperty("message.source"));
+      InputStream is = resource.getInputStream();
+      String jsonTxt = IOUtils.toString(is, "UTF-8");
+      JSONObject json = new JSONObject(jsonTxt);
 
-            ObjectMapper mapper = new ObjectMapper();
+      ObjectMapper mapper = new ObjectMapper();
 
-            MessageArray messageArray = mapper.readValue(json.toString(), MessageArray.class);
+      MessageArray messageArray = mapper.readValue(json.toString(), MessageArray.class);
 
-            return Arrays.asList(messageArray.getMessages());
+      return Arrays.asList(messageArray.getMessages());
 
-        } catch (IOException exception) {
-            throw new RuntimeException("Unable to load messages from text file.", exception);
-        }
-
-
+    } catch (IOException exception) {
+      throw new RuntimeException("Unable to load messages from text file.", exception);
     }
+
+
+  }
 
 }

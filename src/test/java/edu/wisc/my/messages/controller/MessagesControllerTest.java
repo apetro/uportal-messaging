@@ -20,20 +20,20 @@ import org.hamcrest.core.StringContains;
 @AutoConfigureMockMvc
 public class MessagesControllerTest {
 
-    @Autowired
-    private MockMvc mvc;
+  @Autowired
+  private MockMvc mvc;
 
-    @Test
-    public void siteIsUp() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(StringContains.containsString("status")));
-    }
+  @Test
+  public void siteIsUp() throws Exception {
+    mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(content().string(StringContains.containsString("status")));
+  }
 
-    @Test
-    public void allMessages() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/messages").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(StringContains.containsString("titleShort")));
-    }
+  @Test
+  public void allMessages() throws Exception {
+    mvc.perform(MockMvcRequestBuilders.get("/messages").accept(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(content().string(StringContains.containsString("titleShort")));
+  }
 }

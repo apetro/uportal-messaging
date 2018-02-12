@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang.StringUtils;
+
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,7 +19,7 @@ import org.slf4j.LoggerFactory;
  */
 
 
-public class Message   {
+public class Message {
 
   protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -81,10 +82,11 @@ public class Message   {
     return this;
   }
 
-   /**
+  /**
    * Get id
+   *
    * @return id
-  **/
+   **/
   @NotNull
   public String getId() {
     return id;
@@ -99,10 +101,11 @@ public class Message   {
     return this;
   }
 
-   /**
+  /**
    * Get title
+   *
    * @return title
-  **/
+   **/
   public String getTitle() {
     return title;
   }
@@ -315,48 +318,48 @@ public class Message   {
   }
 
   @JsonIgnore
-  public boolean isValidToday(){
+  public boolean isValidToday() {
 
-   Date today = new Date();
-   
-   // Placeholder date format string, 
-   // can be overridden with an application property.
-   String formatString = "yyyy-mm-dd";
+    Date today = new Date();
 
-   try{ 
-   //If there's no date specified, the message is valid.
-   if(StringUtils.isBlank(getGoLiveDate()) && 
-     StringUtils.isBlank(getExpireDate())) {
-       return true;
-     }
+    // Placeholder date format string,
+    // can be overridden with an application property.
+    String formatString = "yyyy-mm-dd";
 
-  SimpleDateFormat defaultFormatter = new SimpleDateFormat(formatString);
+    try {
+      //If there's no date specified, the message is valid.
+      if (StringUtils.isBlank(getGoLiveDate()) &&
+        StringUtils.isBlank(getExpireDate())) {
+        return true;
+      }
 
-  String goLive = getGoLiveDate();
-  String expiration = getExpireDate();
-  
-  // If the message has no goLiveDate, we presume it to have been valid 
-  // since the beginning of time. Or 1977. Whichever came first.
-  String startDateString= (StringUtils.isNotBlank(goLive)) ? 
-       goLive : "1977-08-16";
+      SimpleDateFormat defaultFormatter = new SimpleDateFormat(formatString);
 
-  // If the message has no expirationDate, we presume it will be valid until 
-  // the end of time. Or until we have a Y4K problem. Whichever comes first.       
-  String endDateString= (StringUtils.isNotBlank(expiration)) ?
-       expiration : "3999-12-31";
+      String goLive = getGoLiveDate();
+      String expiration = getExpireDate();
 
-   Date startDate = defaultFormatter.parse(startDateString);
-   Date endDate = defaultFormatter.parse(endDateString);
+      // If the message has no goLiveDate, we presume it to have been valid
+      // since the beginning of time. Or 1977. Whichever came first.
+      String startDateString = (StringUtils.isNotBlank(goLive)) ?
+        goLive : "1977-08-16";
 
-    if(today.after(startDate) && today.before(endDate)) {
-      return true;
+      // If the message has no expirationDate, we presume it will be valid until
+      // the end of time. Or until we have a Y4K problem. Whichever comes first.
+      String endDateString = (StringUtils.isNotBlank(expiration)) ?
+        expiration : "3999-12-31";
+
+      Date startDate = defaultFormatter.parse(startDateString);
+      Date endDate = defaultFormatter.parse(endDateString);
+
+      if (today.after(startDate) && today.before(endDate)) {
+        return true;
+      }
+    } catch (Exception e) {
+      logger.warn("DATE ERROR " + this.id + " " + e.getMessage());
     }
-   } catch (Exception e) {
-     logger.warn("DATE ERROR " + this.id + " " + e.getMessage());
-   }
 
     return false;
- }
+  }
 
 
   @Override
@@ -369,35 +372,38 @@ public class Message   {
     }
     Message message = (Message) o;
     return Objects.equals(this.id, message.id) &&
-        Objects.equals(this.title, message.title) &&
-        Objects.equals(this.titleShort, message.titleShort) &&
-        Objects.equals(this.description, message.description) &&
-        Objects.equals(this.descriptionShort, message.descriptionShort) &&
-        Objects.equals(this.titleUrl, message.titleUrl) &&
-        Objects.equals(this.messageType, message.messageType) &&
-        Objects.equals(this.goLiveDate, message.goLiveDate) &&
-        Objects.equals(this.expireDate, message.expireDate) &&
-        Objects.equals(this.featureImageUrl, message.featureImageUrl) &&
-        Objects.equals(this.priority, message.priority) &&
-        Objects.equals(this.recurrence, message.recurrence) &&
-        Objects.equals(this.dismissible, message.dismissible) &&
-        Objects.equals(this.audienceFilter, message.audienceFilter) &&
-        Objects.equals(this.data, message.data) &&
-        Objects.equals(this.actionButton, message.actionButton) &&
-        Objects.equals(this.moreInfoButton, message.moreInfoButton) &&
-        Objects.equals(this.confirmButton, message.confirmButton);
+      Objects.equals(this.title, message.title) &&
+      Objects.equals(this.titleShort, message.titleShort) &&
+      Objects.equals(this.description, message.description) &&
+      Objects.equals(this.descriptionShort, message.descriptionShort) &&
+      Objects.equals(this.titleUrl, message.titleUrl) &&
+      Objects.equals(this.messageType, message.messageType) &&
+      Objects.equals(this.goLiveDate, message.goLiveDate) &&
+      Objects.equals(this.expireDate, message.expireDate) &&
+      Objects.equals(this.featureImageUrl, message.featureImageUrl) &&
+      Objects.equals(this.priority, message.priority) &&
+      Objects.equals(this.recurrence, message.recurrence) &&
+      Objects.equals(this.dismissible, message.dismissible) &&
+      Objects.equals(this.audienceFilter, message.audienceFilter) &&
+      Objects.equals(this.data, message.data) &&
+      Objects.equals(this.actionButton, message.actionButton) &&
+      Objects.equals(this.moreInfoButton, message.moreInfoButton) &&
+      Objects.equals(this.confirmButton, message.confirmButton);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, titleShort, description, descriptionShort, titleUrl, messageType, goLiveDate, expireDate, featureImageUrl, priority, recurrence, dismissible, audienceFilter, data, actionButton, moreInfoButton, confirmButton);
+    return Objects
+      .hash(id, title, titleShort, description, descriptionShort, titleUrl, messageType, goLiveDate,
+        expireDate, featureImageUrl, priority, recurrence, dismissible, audienceFilter, data,
+        actionButton, moreInfoButton, confirmButton);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Message {\n");
-    
+
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    titleShort: ").append(toIndentedString(titleShort)).append("\n");
@@ -421,8 +427,8 @@ public class Message   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first
+   * line).
    */
   private String toIndentedString(java.lang.Object o) {
     if (o == null) {
@@ -431,4 +437,3 @@ public class Message   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

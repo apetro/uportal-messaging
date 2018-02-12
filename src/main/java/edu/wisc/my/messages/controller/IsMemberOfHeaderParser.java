@@ -14,17 +14,17 @@ import java.util.Set;
 @Component
 public class IsMemberOfHeaderParser {
 
-    public Set<String> groupsFromHeaderValue(String headerValue) {
+  public Set<String> groupsFromHeaderValue(String headerValue) {
 
-        if (null == headerValue) {
-            return Collections.EMPTY_SET;
-        }
-
-        Set<String> userGroups = new HashSet<>();
-
-        String[] groupsArray = headerValue.split(";");
-        userGroups.addAll( Arrays.asList(groupsArray) );
-
-        return userGroups;
+    if (null == headerValue) {
+      return Collections.EMPTY_SET;
     }
+
+    Set<String> userGroups = new HashSet<>();
+
+    String[] groupsArray = headerValue.split(";");
+    userGroups.addAll(Arrays.asList(groupsArray));
+
+    return userGroups;
+  }
 }

@@ -1,14 +1,18 @@
 package edu.wisc.my.messages.model;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import javax.validation.constraints.*;
+
 /**
  * Data
  */
 
-public class Data   {
+public class Data {
+
   @JsonProperty("dataUrl")
   private String dataUrl = null;
 
@@ -100,34 +104,36 @@ public class Data   {
     }
     Data data = (Data) o;
     return Objects.equals(this.dataUrl, data.dataUrl) &&
-        Objects.equals(this.dataObject, data.dataObject) &&
-        Objects.equals(this.dataArrayFilter, data.dataArrayFilter) &&
-        Objects.equals(this.dataMessageTitle, data.dataMessageTitle) &&
-        Objects.equals(this.dataMessageMoreInfoUrl, data.dataMessageMoreInfoUrl);
+      Objects.equals(this.dataObject, data.dataObject) &&
+      Objects.equals(this.dataArrayFilter, data.dataArrayFilter) &&
+      Objects.equals(this.dataMessageTitle, data.dataMessageTitle) &&
+      Objects.equals(this.dataMessageMoreInfoUrl, data.dataMessageMoreInfoUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(dataUrl, dataObject, dataArrayFilter, dataMessageTitle, dataMessageMoreInfoUrl);
+    return Objects
+      .hash(dataUrl, dataObject, dataArrayFilter, dataMessageTitle, dataMessageMoreInfoUrl);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Data {\n");
-    
+
     sb.append("    dataUrl: ").append(toIndentedString(dataUrl)).append("\n");
     sb.append("    dataObject: ").append(toIndentedString(dataObject)).append("\n");
     sb.append("    dataArrayFilter: ").append(toIndentedString(dataArrayFilter)).append("\n");
     sb.append("    dataMessageTitle: ").append(toIndentedString(dataMessageTitle)).append("\n");
-    sb.append("    dataMessageMoreInfoUrl: ").append(toIndentedString(dataMessageMoreInfoUrl)).append("\n");
+    sb.append("    dataMessageMoreInfoUrl: ").append(toIndentedString(dataMessageMoreInfoUrl))
+      .append("\n");
     sb.append("}");
     return sb.toString();
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first
+   * line).
    */
   private String toIndentedString(java.lang.Object o) {
     if (o == null) {
@@ -136,4 +142,3 @@ public class Data   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

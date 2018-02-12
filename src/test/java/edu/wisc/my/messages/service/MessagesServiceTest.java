@@ -67,13 +67,13 @@ public class MessagesServiceTest {
         MessagesService service = new MessagesService();
 
         AudienceFilter yesFilter = mock(AudienceFilter.class);
-        when(yesFilter.matches(any())).thenReturn(true);
+        when(yesFilter.test(any())).thenReturn(true);
         Message matchingMessage = new Message();
         matchingMessage.setAudienceFilter(yesFilter);
         matchingMessage.setId("uniqueMessageId");
 
         AudienceFilter noFilter = mock(AudienceFilter.class);
-        when(noFilter.matches(any())).thenReturn(false);
+        when(noFilter.test(any())).thenReturn(false);
         Message unmatchingMessage = new Message();
         unmatchingMessage.setAudienceFilter(noFilter);
 

@@ -1,16 +1,22 @@
 package edu.wisc.my.messages.model;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import javax.validation.constraints.*;
-/**
- * AudienceFilter
- */
 
-public class AudienceFilter   {
+/**
+ * Predicate over User, answering whether the User is or is not in the Audience.
+ *
+ * Currently AudienceFilter only knows how to consider whether a User is a
+ * member of at least one of the required groups for a message. Conceptually
+ * other varieties of AudienceFilters might be possible.
+ */
+public class AudienceFilter
+  implements Predicate<User> {
   @JsonProperty("groups")
   private List<String> groups = new ArrayList<String>();
 
@@ -71,7 +77,8 @@ public class AudienceFilter   {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public boolean matches(User user) {
+  @Override
+  public boolean test(User user) {
 
     Set<String> requireAtLeastOneOfTheseGroups = new HashSet<>();
     requireAtLeastOneOfTheseGroups.addAll(this.groups);

@@ -21,7 +21,7 @@ public class AudienceFilterTest {
         groups.add("unrelatedGroup");
         user.setGroups(groups);
 
-        assertTrue(filter.matches(user));
+        assertTrue(filter.test(user));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class AudienceFilterTest {
         groups.add("unrelatedGroup");
         user.setGroups(groups);
 
-        assertFalse(filter.matches(user));
+        assertFalse(filter.test(user));
     }
 
 }

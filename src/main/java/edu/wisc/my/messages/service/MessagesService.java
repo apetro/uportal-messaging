@@ -58,7 +58,7 @@ public class MessagesService {
         try {
             for (Message message : messageSource.allMessages()) {
                 if (message.isValidToday()
-                        && ((null == message.getAudienceFilter() || message.getAudienceFilter().matches(user) ) )
+                        && ((null == message.getAudienceFilter() || message.getAudienceFilter().test(user) ) )
                     ) {
                     JSONObject validMessage = new JSONObject(message);
                     validMessageArray.put(validMessage);
@@ -77,4 +77,3 @@ public class MessagesService {
         this.messageSource = messageSource;
     }
 }
-     

@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class Application extends SpringBootServletInitializer{
+public class Application extends SpringBootServletInitializer {
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
 }

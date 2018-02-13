@@ -24,56 +24,57 @@ import edu.wisc.my.messages.model.MessageArray;
 
 @Service
 public class MessagesService {
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private MessagesFromTextFile messageSource;
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public JSONObject allMessages() {
-        try {
-            List<Message> allMessages = messageSource.allMessages();
+  private MessagesFromTextFile messageSource;
 
-            JSONArray jsonMessageArray = new JSONArray(allMessages);
-            JSONObject messagesJson = new JSONObject();
-            messagesJson.put("messages", jsonMessageArray);
+  public JSONObject allMessages() {
+    try {
+      List<Message> allMessages = messageSource.allMessages();
 
-            return messagesJson;
+      JSONArray jsonMessageArray = new JSONArray(allMessages);
+      JSONObject messagesJson = new JSONObject();
+      messagesJson.put("messages", jsonMessageArray);
 
-        } catch (Exception e) {
-            logger.warn("service exception " + e.getMessage());
-            JSONObject responseObj = new JSONObject();
-            responseObj.put("status", "error");
-            return responseObj;
+      return messagesJson;
+
+    } catch (Exception e) {
+      logger.warn("service exception " + e.getMessage());
+      JSONObject responseObj = new JSONObject();
+      responseObj.put("status", "error");
+      return responseObj;
+    }
+  }
+
+  public JSONObject filteredMessages(User user) {
+    JSONObject validMessages = new JSONObject();
+    JSONArray validMessageArray = new JSONArray();
+    ObjectMapper mapper = new ObjectMapper();
+
+    // needed this to get unit test working to support refactoring JSON out of the service layer
+    // at which point won't need this to unit test service layer.
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+    try {
+      for (Message message : messageSource.allMessages()) {
+        if (message.isValidToday()
+          && ((null == message.getAudienceFilter() || message.getAudienceFilter().test(user)))
+          ) {
+          JSONObject validMessage = new JSONObject(message);
+          validMessageArray.put(validMessage);
         }
+      }
+      validMessages.put("messages", validMessageArray);
+    } catch (Exception e) {
+      logger.warn("Date filter failure ", e);
+      return null;
     }
+    return validMessages;
+  }
 
-    public JSONObject filteredMessages(User user) {
-        JSONObject validMessages = new JSONObject();
-        JSONArray validMessageArray = new JSONArray();
-        ObjectMapper mapper = new ObjectMapper();
-
-        // needed this to get unit test working to support refactoring JSON out of the service layer
-        // at which point won't need this to unit test service layer.
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-
-        try {
-            for (Message message : messageSource.allMessages()) {
-                if (message.isValidToday()
-                        && ((null == message.getAudienceFilter() || message.getAudienceFilter().test(user) ) )
-                    ) {
-                    JSONObject validMessage = new JSONObject(message);
-                    validMessageArray.put(validMessage);
-                }
-            }
-            validMessages.put("messages", validMessageArray);
-        } catch (Exception e) {
-            logger.warn("Date filter failure ", e);
-            return null;
-        }
-        return validMessages;
-    }
-
-    @Autowired
-    public void setMessageSource(MessagesFromTextFile messageSource) {
-        this.messageSource = messageSource;
-    }
+  @Autowired
+  public void setMessageSource(MessagesFromTextFile messageSource) {
+    this.messageSource = messageSource;
+  }
 }

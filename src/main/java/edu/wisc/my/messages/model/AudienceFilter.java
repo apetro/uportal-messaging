@@ -9,14 +9,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import javax.validation.constraints.*;
 
 /**
- * Predicate over User, answering whether the User is or is not in the Audience.
- *
- * Currently AudienceFilter only knows how to consider whether a User is a
- * member of at least one of the required groups for a message. Conceptually
- * other varieties of AudienceFilters might be possible.
+ * Predicate over User, answering whether the User is or is not in the Audience. <p> Currently
+ * AudienceFilter only knows how to consider whether a User is a member of at least one of the
+ * required groups for a message. Conceptually other varieties of AudienceFilters might be
+ * possible.
  */
 public class AudienceFilter
   implements Predicate<User> {
+
   @JsonProperty("groups")
   private List<String> groups = new ArrayList<String>();
 
@@ -60,15 +60,15 @@ public class AudienceFilter
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class AudienceFilter {\n");
-    
+
     sb.append("    groups: ").append(toIndentedString(groups)).append("\n");
     sb.append("}");
     return sb.toString();
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first
+   * line).
    */
   private String toIndentedString(java.lang.Object o) {
     if (o == null) {
@@ -85,6 +85,6 @@ public class AudienceFilter
 
     requireAtLeastOneOfTheseGroups.retainAll(user.getGroups());
 
-    return ( ! requireAtLeastOneOfTheseGroups.isEmpty());
+    return (!requireAtLeastOneOfTheseGroups.isEmpty());
   }
 }

@@ -20,6 +20,6 @@
 - [ ] Configurable
 - [ ] Readable
 - [ ] Validates and sanitizes user input
-- [ ] Styled
+- [ ] Styled (Google Style)
 
 [Definition of Done]: https://goo.gl/4JG2Z5

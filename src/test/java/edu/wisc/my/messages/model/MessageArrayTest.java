@@ -8,21 +8,22 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class MessageArrayTest {
-    @Test
-    public void createMessageArrayFromList() {
 
-        List<Message> someMessages = new ArrayList<>();
+  @Test
+  public void createMessageArrayFromList() {
 
-        Message aMessage = new Message();
-        Message anotherMessage = new Message();
-        Message yetAnotherMessage = new Message();
+    List<Message> someMessages = new ArrayList<>();
 
-        someMessages.add(aMessage);
-        someMessages.add(anotherMessage);
-        someMessages.add(yetAnotherMessage);
+    Message aMessage = new Message();
+    Message anotherMessage = new Message();
+    Message yetAnotherMessage = new Message();
 
-        MessageArray messageArray = new MessageArray(someMessages);
+    someMessages.add(aMessage);
+    someMessages.add(anotherMessage);
+    someMessages.add(yetAnotherMessage);
 
-        assertArrayEquals(someMessages.toArray(), messageArray.getMessages());
-    }
+    MessageArray messageArray = new MessageArray(someMessages);
+
+    assertArrayEquals(someMessages.toArray(), messageArray.getMessages());
+  }
 }

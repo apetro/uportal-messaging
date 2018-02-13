@@ -1,13 +1,18 @@
 package edu.wisc.my.messages.model;
+
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import javax.validation.constraints.*;
+
 /**
  * ActionButton
  */
 
-public class ActionButton   {
+public class ActionButton {
+
   @JsonProperty("label")
   private String label = null;
 
@@ -51,7 +56,7 @@ public class ActionButton   {
     }
     ActionButton actionButton = (ActionButton) o;
     return Objects.equals(this.label, actionButton.label) &&
-        Objects.equals(this.url, actionButton.url);
+      Objects.equals(this.url, actionButton.url);
   }
 
   @Override
@@ -63,7 +68,7 @@ public class ActionButton   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ActionButton {\n");
-    
+
     sb.append("    label: ").append(toIndentedString(label)).append("\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("}");
@@ -71,8 +76,8 @@ public class ActionButton   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first
+   * line).
    */
   private String toIndentedString(java.lang.Object o) {
     if (o == null) {
@@ -81,4 +86,3 @@ public class ActionButton   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

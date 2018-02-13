@@ -18,62 +18,64 @@ import static org.mockito.Mockito.*;
 public class MessagesControllerUnitTest {
 
 
-    /**
-     * Test that the controller reads isMemberOf header from the request, asking its IsMemberOfHeaderParser about it.
-     */
-    @Test
-    public void usesIsMemberOfHeader() {
+  /**
+   * Test that the controller reads isMemberOf header from the request, asking its
+   * IsMemberOfHeaderParser about it.
+   */
+  @Test
+  public void usesIsMemberOfHeader() {
 
-        MessagesService mockService = mock(MessagesService.class);
-        IsMemberOfHeaderParser mockParser = mock(IsMemberOfHeaderParser.class);
+    MessagesService mockService = mock(MessagesService.class);
+    IsMemberOfHeaderParser mockParser = mock(IsMemberOfHeaderParser.class);
 
-        MessagesController controller = new MessagesController();
-        controller.setIsMemberOfHeaderParser(mockParser);
-        controller.setMessagesService(mockService);
+    MessagesController controller = new MessagesController();
+    controller.setIsMemberOfHeaderParser(mockParser);
+    controller.setMessagesService(mockService);
 
-        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
-        HttpServletResponse mockResponse = mock(HttpServletResponse.class);
-        JSONObject mockJsonObject = mock(JSONObject.class);
+    HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+    HttpServletResponse mockResponse = mock(HttpServletResponse.class);
+    JSONObject mockJsonObject = mock(JSONObject.class);
 
-        when(mockRequest.getHeader("isMemberOf")).thenReturn("group1;group2;");
-        when(mockService.filteredMessages(any())).thenReturn(mockJsonObject);
+    when(mockRequest.getHeader("isMemberOf")).thenReturn("group1;group2;");
+    when(mockService.filteredMessages(any())).thenReturn(mockJsonObject);
 
-        controller.currentMessages(mockRequest, mockResponse);
+    controller.currentMessages(mockRequest, mockResponse);
 
-        verify(mockRequest).getHeader("isMemberOf");
-        verify(mockParser).groupsFromHeaderValue("group1;group2;");
+    verify(mockRequest).getHeader("isMemberOf");
+    verify(mockParser).groupsFromHeaderValue("group1;group2;");
 
-    }
+  }
 
-    /**
-     * Test that the controller passes on to the Service the groups it learned from its IsMemberOfHeaderParser.
-     */
-    @Test
-    public void passesGroupsToService() {
+  /**
+   * Test that the controller passes on to the Service the groups it learned from its
+   * IsMemberOfHeaderParser.
+   */
+  @Test
+  public void passesGroupsToService() {
 
-        MessagesService mockService = mock(MessagesService.class);
-        IsMemberOfHeaderParser mockParser = mock(IsMemberOfHeaderParser.class);
+    MessagesService mockService = mock(MessagesService.class);
+    IsMemberOfHeaderParser mockParser = mock(IsMemberOfHeaderParser.class);
 
-        MessagesController controller = new MessagesController();
-        controller.setIsMemberOfHeaderParser(mockParser);
-        controller.setMessagesService(mockService);
+    MessagesController controller = new MessagesController();
+    controller.setIsMemberOfHeaderParser(mockParser);
+    controller.setMessagesService(mockService);
 
-        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
-        HttpServletResponse mockResponse = mock(HttpServletResponse.class);
-        JSONObject mockJsonObject = mock(JSONObject.class);
+    HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+    HttpServletResponse mockResponse = mock(HttpServletResponse.class);
+    JSONObject mockJsonObject = mock(JSONObject.class);
 
-        when(mockService.filteredMessages(any())).thenReturn(mockJsonObject);
-        Set<String> groups = new HashSet<>();
-        groups.add("someGroup");
-        groups.add("someOtherGroup");
-        groups.add("yetAnotherGroup");
-        when(mockParser.groupsFromHeaderValue(anyString())).thenReturn(groups);
+    when(mockService.filteredMessages(any())).thenReturn(mockJsonObject);
+    Set<String> groups = new HashSet<>();
+    groups.add("someGroup");
+    groups.add("someOtherGroup");
+    groups.add("yetAnotherGroup");
+    when(mockParser.groupsFromHeaderValue(anyString())).thenReturn(groups);
 
-        controller.currentMessages(mockRequest, mockResponse);
+    controller.currentMessages(mockRequest, mockResponse);
 
-        ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
-        verify(mockService).filteredMessages(argument.capture());
-        assertEquals(groups, argument.getValue().getGroups());
-    }
+    ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
+    verify(mockService).filteredMessages(argument.capture());
+    assertEquals(groups, argument.getValue().getGroups());
+  }
 
 }

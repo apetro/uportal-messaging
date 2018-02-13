@@ -3,22 +3,23 @@ package edu.wisc.my.messages.model;
 import java.util.List;
 
 public class MessageArray {
-    private Message[] messages;
 
-    public MessageArray(){
-    }
+  private Message[] messages;
 
-    public MessageArray(List<Message> someMessages) {
-        Message[] arrayExample = {};
-        this.messages = someMessages.toArray(arrayExample);
-    }
+  public MessageArray() {
+  }
 
-    public Message[] getMessages(){
-        return this.messages;
-    }
+  public MessageArray(List<Message> someMessages) {
+    Message[] arrayExample = {};
+    this.messages = someMessages.toArray(arrayExample);
+  }
 
-    public void setMessages(Message[] messages) {
-        this.messages = messages;
-    }
+  public Message[] getMessages() {
+    return this.messages;
+  }
+
+  public void setMessages(Message[] messages) {
+    this.messages = messages;
+  }
 }
 

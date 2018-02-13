@@ -28,13 +28,13 @@
 <!--    http://www.qos.ch/shop/products/professionalSupport         -->
 <!--                                                                -->
 <configuration scan="true" scanPeriod="30 seconds">
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    <contextName>uportal-messaging</contextName>
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+  <contextName>uportal-messaging</contextName>
 
-  <!-- 
+  <!--
    | Specify a local property that sets up the logging directory
    +-->
-  <property scope="local" name="LOG_DIR" value="./logs/${CONTEXT_NAME}" />
+  <property scope="local" name="LOG_DIR" value="./logs/${CONTEXT_NAME}"/>
 
   <appender name="LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
@@ -50,10 +50,10 @@
   </appender>
 
   <root level="WARN">
-      <appender-ref ref="LOG"/>
+    <appender-ref ref="LOG"/>
   </root>
   <logger name="edu.wisc" additivity="false" level="WARN">
-        <appender-ref ref="LOG"/>
-    </logger>
+    <appender-ref ref="LOG"/>
+  </logger>
 
 </configuration>

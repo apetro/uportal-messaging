@@ -317,6 +317,7 @@ public class Message   {
   @JsonIgnore
   public boolean isValidToday(){
 
+   boolean isValidToday = false;
    Date today = new Date();
    
    // Placeholder date format string, 
@@ -349,13 +350,14 @@ public class Message   {
    Date endDate = defaultFormatter.parse(endDateString);
 
     if(today.after(startDate) && today.before(endDate)) {
-      return true;
+      isValidToday = true;
     }
    } catch (Exception e) {
      logger.warn("DATE ERROR " + this.id + " " + e.getMessage());
+     isValidToday =  false;
    }
 
-    return false;
+   return isValidToday;
  }
 
 

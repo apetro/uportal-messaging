@@ -318,49 +318,50 @@ public class Message {
   }
 
   @JsonIgnore
-  public boolean isValidToday() {
+  public boolean isValidToday(){
 
-    Date today = new Date();
+   boolean isValidToday = false;
+   Date today = new Date();
+   
+   // Placeholder date format string, 
+   // can be overridden with an application property.
+   String formatString = "yyyy-mm-dd";
 
-    // Placeholder date format string,
-    // can be overridden with an application property.
-    String formatString = "yyyy-mm-dd";
+   try{ 
+   //If there's no date specified, the message is valid.
+   if(StringUtils.isBlank(getGoLiveDate()) && 
+     StringUtils.isBlank(getExpireDate())) {
+       return true;
+     }
 
-    try {
-      //If there's no date specified, the message is valid.
-      if (StringUtils.isBlank(getGoLiveDate()) &&
-        StringUtils.isBlank(getExpireDate())) {
-        return true;
-      }
+  SimpleDateFormat defaultFormatter = new SimpleDateFormat(formatString);
 
-      SimpleDateFormat defaultFormatter = new SimpleDateFormat(formatString);
+  String goLive = getGoLiveDate();
+  String expiration = getExpireDate();
+  
+  // If the message has no goLiveDate, we presume it to have been valid 
+  // since the beginning of time. Or 1977. Whichever came first.
+  String startDateString= (StringUtils.isNotBlank(goLive)) ? 
+       goLive : "1977-08-16";
 
-      String goLive = getGoLiveDate();
-      String expiration = getExpireDate();
+  // If the message has no expirationDate, we presume it will be valid until 
+  // the end of time. Or until we have a Y4K problem. Whichever comes first.       
+  String endDateString= (StringUtils.isNotBlank(expiration)) ?
+       expiration : "3999-12-31";
 
-      // If the message has no goLiveDate, we presume it to have been valid
-      // since the beginning of time. Or 1977. Whichever came first.
-      String startDateString = (StringUtils.isNotBlank(goLive)) ?
-        goLive : "1977-08-16";
+   Date startDate = defaultFormatter.parse(startDateString);
+   Date endDate = defaultFormatter.parse(endDateString);
 
-      // If the message has no expirationDate, we presume it will be valid until
-      // the end of time. Or until we have a Y4K problem. Whichever comes first.
-      String endDateString = (StringUtils.isNotBlank(expiration)) ?
-        expiration : "3999-12-31";
-
-      Date startDate = defaultFormatter.parse(startDateString);
-      Date endDate = defaultFormatter.parse(endDateString);
-
-      if (today.after(startDate) && today.before(endDate)) {
-        return true;
-      }
-    } catch (Exception e) {
-      logger.warn("DATE ERROR " + this.id + " " + e.getMessage());
+    if(today.after(startDate) && today.before(endDate)) {
+      isValidToday = true;
     }
+   } catch (Exception e) {
+     logger.warn("DATE ERROR " + this.id + " " + e.getMessage());
+     isValidToday =  false;
+   }
 
-    return false;
-  }
-
+   return isValidToday;
+ }
 
   @Override
   public boolean equals(java.lang.Object o) {

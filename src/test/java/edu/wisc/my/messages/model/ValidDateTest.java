@@ -91,8 +91,8 @@ public class ValidDateTest {
   }
 
   /**
-   * Test that messages that expire later today are not considered expired.
-   * That is, that expiration supports the THH:MM suffix on ISO date-times.
+   * Test that messages that expire later today are not considered expired. That is, that expiration
+   * supports the THH:MM suffix on ISO date-times.
    */
   @Test
   public void expiringLaterTodayIsNotExpired() throws InterruptedException {

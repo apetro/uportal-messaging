@@ -74,4 +74,34 @@ public class ValidDateTest {
     assertTrue("Should not be expired because two seconds from now is not expired.",
       message.isValidToday());
   }
+
+  @Test
+  public void goingLiveLaterTodayIsNotLive() throws InterruptedException {
+
+    // assumption: this test will not take more than 2 seconds.
+
+    // this test relies on two seconds from now being in the same date, so that an implementation
+    // that respects time will notice that the that timestamp is not yet expired whereas an
+    // implementation that only respects dates will consider that timestamp expired.
+    //
+    // therefore edge case: it is less than four seconds before the date rolls over
+    // in this case wait four seconds to escape the edge case
+
+    LocalDateTime now = LocalDateTime.now();
+
+    if (now.getHour() == 23 && now.getSecond() > 56) {
+      wait(4000);
+    }
+
+    // two seconds from now is within the current date, either because not in the edge case
+    // or because waited for the edge case to pass
+
+    LocalDateTime twoSecondsLaterThanNow = LocalDateTime.now().plusSeconds(2);
+
+    Message message = new Message();
+    message.setGoLiveDate(twoSecondsLaterThanNow.toString());
+    assertFalse("Should not be valid because two seconds from now is not gone live.",
+      message.isValidToday());
+
+  }
 }

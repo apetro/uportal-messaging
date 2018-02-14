@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -321,12 +322,12 @@ public class Message {
 
     try {
       // if the message is premature, it is not valid.
-      if (null != goLiveDate && LocalDateTime.parse(goLiveDate).isAfter(now)) {
+      if (StringUtils.isNotBlank(goLiveDate) && LocalDateTime.parse(goLiveDate).isAfter(now)) {
         return false;
       }
 
       // if the message is expired, it is not valid
-      if (null != expireDate && LocalDateTime.parse(expireDate).isBefore(now)) {
+      if (StringUtils.isNotBlank(expireDate) && LocalDateTime.parse(expireDate).isBefore(now)) {
         return false;
       }
 

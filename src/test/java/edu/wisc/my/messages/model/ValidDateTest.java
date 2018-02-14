@@ -41,6 +41,14 @@ public class ValidDateTest {
         assertTrue(message.isValidToday());
     }
 
+    @Test
+    public void ignoresEmptyStringDates() {
+      Message message = new Message();
+      message.setExpireDate("");
+      message.setGoLiveDate("");
+      assertTrue(message.isValidToday());
+    }
+
   /**
    * Test that messages that expire later today are not considered expired.
    * That is, that expiration supports the THH:MM suffix on ISO date-times.

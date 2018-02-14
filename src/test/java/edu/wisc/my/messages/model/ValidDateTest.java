@@ -77,6 +77,7 @@ public class ValidDateTest {
     LocalDateTime twoSecondsLaterThanNow = LocalDateTime.now().plusSeconds(2);
 
     Message message = new Message();
+    // this works because LocalDateTime toString() --> ISO date-time format.
     message.setExpireDate(twoSecondsLaterThanNow.toString());
     message.setGoLiveDate("1900-01-01T03:00");
     assertTrue("Should not be expired because two seconds from now is not expired.",

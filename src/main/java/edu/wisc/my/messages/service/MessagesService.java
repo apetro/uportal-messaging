@@ -55,6 +55,9 @@ public class MessagesService {
       new ExpiredMessagePredicate(LocalDateTime.now()).negate()
         .and(new GoneLiveMessagePredicate(LocalDateTime.now()));
 
+    Predicate<Message> retainMessage =
+      neitherPrematureNorExpired.and(new AudienceFilterMessagePredicate(user));
+
     JSONObject validMessages = new JSONObject();
     JSONArray validMessageArray = new JSONArray();
     ObjectMapper mapper = new ObjectMapper();
@@ -65,9 +68,7 @@ public class MessagesService {
 
     try {
       for (Message message : messageSource.allMessages()) {
-        if (neitherPrematureNorExpired.test(message)
-          && ((null == message.getAudienceFilter() || message.getAudienceFilter().test(user)))
-          ) {
+        if (retainMessage.test(message)) {
           JSONObject validMessage = new JSONObject(message);
           validMessageArray.put(validMessage);
         }

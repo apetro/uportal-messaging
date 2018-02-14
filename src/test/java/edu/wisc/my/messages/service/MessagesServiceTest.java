@@ -2,6 +2,7 @@ package edu.wisc.my.messages.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -102,4 +103,36 @@ public class MessagesServiceTest {
     assertEquals("uniqueMessageId", resultMessage.getString("id"));
   }
 
+  @Test
+  public void excludesExpiredMessages() {
+    MessagesService service = new MessagesService();
+
+    Message expiredMessage = new Message();
+    String longAgoDate = "1999-12-31";
+    expiredMessage.setExpireDate(longAgoDate);
+
+    Message preciselyExpiredMessage = new Message();
+    String preciseLongAgoDate = "1999-12-31T13:21:14";
+    preciselyExpiredMessage.setExpireDate(preciseLongAgoDate);
+
+    List<Message> unfilteredMessages = new ArrayList<>();
+    unfilteredMessages.add(expiredMessage);
+    unfilteredMessages.add(preciselyExpiredMessage);
+
+    MessagesFromTextFile messageSource = mock(MessagesFromTextFile.class);
+    when(messageSource.allMessages()).thenReturn(unfilteredMessages);
+
+    service.setMessageSource(messageSource);
+
+    User user = new User();
+
+    JSONObject result = service.filteredMessages(user);
+
+    assertNotNull(result);
+
+    JSONArray resultMessages = result.getJSONArray("messages");
+    assertNotNull(resultMessages);
+
+    assertTrue(resultMessages.toList().isEmpty());
+  }
 }

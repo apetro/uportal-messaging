@@ -10,24 +10,6 @@ import org.junit.Test;
 public class ValidDateTest {
 
   @Test
-  public void filterOutExpiredDates() {
-    Message message = new Message();
-    String longAgoDate = "1999-12-31";
-    message.setExpireDate(longAgoDate);
-    assertFalse("Expired messages should not be valid.",
-      message.isValidToday());
-  }
-
-  @Test
-  public void expiredDatesCanBeSpecifiedWithTime() {
-    Message message = new Message();
-    String longAgoDateTime = "1999-12-31T13:21:14";
-    message.setExpireDate(longAgoDateTime);
-    assertFalse("Time-specified expire date-times should be honored.",
-      message.isValidToday());
-  }
-
-  @Test
   public void futureExpiredDatesCanOmitTime() {
     Message message = new Message();
     String longFutureDate = "2999-12-31";

@@ -1,5 +1,7 @@
 package edu.wisc.my.messages.model;
 
+import edu.wisc.my.messages.service.ExpiredMessagePredicate;
+import edu.wisc.my.messages.service.GoneLiveMessagePredicate;
 import edu.wisc.my.messages.time.IsoDateTimeStringAfterPredicate;
 import edu.wisc.my.messages.time.IsoDateTimeStringBeforePredicate;
 
@@ -8,6 +10,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.function.Predicate;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -319,33 +322,14 @@ public class Message {
   }
 
   @JsonIgnore
+  @Deprecated
   public boolean isValidToday() {
 
-    IsoDateTimeStringBeforePredicate beforeNow =
-      new IsoDateTimeStringBeforePredicate(LocalDateTime.now());
+    Predicate<Message> neitherPrematureNorExpiredPredicate = new ExpiredMessagePredicate(
+      LocalDateTime.now()).negate().and(new GoneLiveMessagePredicate(
+      LocalDateTime.now()));
 
-    IsoDateTimeStringAfterPredicate afterNow =
-      new IsoDateTimeStringAfterPredicate(LocalDateTime.now());
-
-    try {
-      // if the message is premature, it is not valid.
-      if (afterNow.test(goLiveDate)) {
-        return false;
-      }
-
-      // if the message is expired, it is not valid
-      if (beforeNow.test(expireDate)) {
-        return false;
-      }
-
-      // if the message is neither premature nor expired, it's valid
-      return true;
-
-    } catch (Exception e) {
-      logger.warn("DATE ERROR " + this.id + " " + e.getMessage());
-      // if we cannot determine whether the message dates would make it valid, fail closed
-      return false;
-    }
+    return neitherPrematureNorExpiredPredicate.test(this);
   }
 
   @Override

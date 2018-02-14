@@ -1,6 +1,7 @@
 package edu.wisc.my.messages.service;
 
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import edu.wisc.my.messages.data.MessagesFromTextFile;
 import edu.wisc.my.messages.model.User;
+import java.util.function.Predicate;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,6 +50,11 @@ public class MessagesService {
   }
 
   public JSONObject filteredMessages(User user) {
+
+    Predicate<Message> neitherPrematureNorExpired =
+      new ExpiredMessagePredicate(LocalDateTime.now()).negate()
+        .and(new GoneLiveMessagePredicate(LocalDateTime.now()));
+
     JSONObject validMessages = new JSONObject();
     JSONArray validMessageArray = new JSONArray();
     ObjectMapper mapper = new ObjectMapper();
@@ -58,7 +65,7 @@ public class MessagesService {
 
     try {
       for (Message message : messageSource.allMessages()) {
-        if (message.isValidToday()
+        if (neitherPrematureNorExpired.test(message)
           && ((null == message.getAudienceFilter() || message.getAudienceFilter().test(user)))
           ) {
           JSONObject validMessage = new JSONObject(message);

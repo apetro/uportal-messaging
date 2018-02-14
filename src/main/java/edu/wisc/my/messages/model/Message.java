@@ -1,11 +1,9 @@
 package edu.wisc.my.messages.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.apache.commons.lang.StringUtils;
 
 import javax.validation.constraints.NotNull;
 
@@ -318,50 +316,29 @@ public class Message {
   }
 
   @JsonIgnore
-  public boolean isValidToday(){
+  public boolean isValidToday() {
+    LocalDateTime now = LocalDateTime.now();
 
-   boolean isValidToday = false;
-   Date today = new Date();
-   
-   // Placeholder date format string, 
-   // can be overridden with an application property.
-   String formatString = "yyyy-mm-dd";
+    try {
+      // if the message is premature, it is not valid.
+      if (null != goLiveDate && LocalDateTime.parse(goLiveDate).isAfter(now)) {
+        return false;
+      }
 
-   try{ 
-   //If there's no date specified, the message is valid.
-   if(StringUtils.isBlank(getGoLiveDate()) && 
-     StringUtils.isBlank(getExpireDate())) {
-       return true;
-     }
+      // if the message is expired, it is not valid
+      if (null != expireDate && LocalDateTime.parse(expireDate).isBefore(now)) {
+        return false;
+      }
 
-  SimpleDateFormat defaultFormatter = new SimpleDateFormat(formatString);
+      // if the message is neither premature nor expired, it's valid
+      return true;
 
-  String goLive = getGoLiveDate();
-  String expiration = getExpireDate();
-  
-  // If the message has no goLiveDate, we presume it to have been valid 
-  // since the beginning of time. Or 1977. Whichever came first.
-  String startDateString= (StringUtils.isNotBlank(goLive)) ? 
-       goLive : "1977-08-16";
-
-  // If the message has no expirationDate, we presume it will be valid until 
-  // the end of time. Or until we have a Y4K problem. Whichever comes first.       
-  String endDateString= (StringUtils.isNotBlank(expiration)) ?
-       expiration : "3999-12-31";
-
-   Date startDate = defaultFormatter.parse(startDateString);
-   Date endDate = defaultFormatter.parse(endDateString);
-
-    if(today.after(startDate) && today.before(endDate)) {
-      isValidToday = true;
+    } catch (Exception e) {
+      logger.warn("DATE ERROR " + this.id + " " + e.getMessage());
+      // if we cannot determine whether the message dates would make it valid, fail closed
+      return false;
     }
-   } catch (Exception e) {
-     logger.warn("DATE ERROR " + this.id + " " + e.getMessage());
-     isValidToday =  false;
-   }
-
-   return isValidToday;
- }
+  }
 
   @Override
   public boolean equals(java.lang.Object o) {

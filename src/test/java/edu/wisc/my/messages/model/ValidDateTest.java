@@ -14,7 +14,8 @@ public class ValidDateTest {
         Message message = new Message();
         String longAgoDate = "1999-12-31";
         message.setExpireDate(longAgoDate);
-        assertFalse(message.isValidToday());
+        assertFalse("Expired messages should not be valid.",
+          message.isValidToday());
     }
 
     @Test
@@ -22,7 +23,8 @@ public class ValidDateTest {
       Message message = new Message();
       String longAgoDateTime = "1999-12-31T13:21:14";
       message.setExpireDate(longAgoDateTime);
-      assertFalse(message.isValidToday());
+      assertFalse("Time-specified expire date-times should be honored.",
+        message.isValidToday());
     }
 
     @Test
@@ -30,7 +32,8 @@ public class ValidDateTest {
       Message message = new Message();
       String longFutureDate = "2999-12-31";
       message.setExpireDate(longFutureDate);
-      assertTrue(message.isValidToday());
+      assertTrue("Future expiration date omitting time should not invalidate message",
+        message.isValidToday());
     }
 
     @Test
@@ -38,7 +41,8 @@ public class ValidDateTest {
         Message message = new Message();
         String futureDate = "2100-12-31";
         message.setGoLiveDate(futureDate);
-        assertFalse(message.isValidToday());
+        assertFalse("Future go-live date without tim specified should invalidate message.",
+          message.isValidToday());
     }
 
     @Test
@@ -46,7 +50,8 @@ public class ValidDateTest {
       Message message = new Message();
       String pastDate = "2000-04-12T12:21:21";
       message.setGoLiveDate(pastDate);
-      assertTrue(message.isValidToday());
+      assertTrue("Messages with past go-live date-times with time specified should be valid.",
+        message.isValidToday());
     }
 
     @Test
@@ -54,7 +59,8 @@ public class ValidDateTest {
       Message message = new Message();
       String pastDate = "2000-04-12";
       message.setGoLiveDate(pastDate);
-      assertTrue(message.isValidToday());
+      assertTrue("Past go-live date omitting time should not invalidate message.",
+        message.isValidToday());
     }
 
     @Test
@@ -62,7 +68,8 @@ public class ValidDateTest {
         Message message = new Message();
         String nonsenseDate = "Not a date";
         message.setGoLiveDate(nonsenseDate);
-        assertFalse(message.isValidToday());
+        assertFalse("Unparseable date strings should invalidate a message (fail closed).",
+          message.isValidToday());
     }
 
     @Test
@@ -70,7 +77,8 @@ public class ValidDateTest {
         Message message = new Message();
         message.setExpireDate(null);
         message.setGoLiveDate(null);
-        assertTrue(message.isValidToday());
+        assertTrue("Null go live or expire dates should not invalidate message.",
+          message.isValidToday());
     }
 
     @Test
@@ -78,7 +86,8 @@ public class ValidDateTest {
       Message message = new Message();
       message.setExpireDate("");
       message.setGoLiveDate("");
-      assertTrue(message.isValidToday());
+      assertTrue("Empty date strings shouldn't invalidate a message",
+        message.isValidToday());
     }
 
   /**
@@ -112,7 +121,7 @@ public class ValidDateTest {
     // this works because LocalDateTime toString() --> ISO date-time format.
     message.setExpireDate(twoSecondsLaterThanNow.toString());
     message.setGoLiveDate("1900-01-01T03:00");
-    assertTrue("Should not be expired because two seconds from now is not expired.",
+    assertTrue("Message considered expired prematurely.",
       message.isValidToday());
   }
 
@@ -141,7 +150,7 @@ public class ValidDateTest {
 
     Message message = new Message();
     message.setGoLiveDate(twoSecondsLaterThanNow.toString());
-    assertFalse("Should not be valid because two seconds from now is not gone live.",
+    assertFalse("Message considered gone live prematurely.",
       message.isValidToday());
 
   }

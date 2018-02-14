@@ -1,5 +1,6 @@
 package edu.wisc.my.messages.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -322,14 +323,29 @@ public class Message {
 
     try {
       // if the message is premature, it is not valid.
-      if (StringUtils.isNotBlank(goLiveDate) && LocalDateTime.parse(goLiveDate).isAfter(now)) {
+      // go live date might be time specified
+      if (StringUtils.isNotBlank(goLiveDate) && goLiveDate.contains("T")
+        && LocalDateTime.parse(goLiveDate).isAfter(now)) {
+        return false;
+      }
+      // or go live date might not be time specified
+      if (StringUtils.isNotBlank(goLiveDate) && !goLiveDate.contains("T")
+        && LocalDate.parse(goLiveDate).isAfter(now.toLocalDate())) {
         return false;
       }
 
       // if the message is expired, it is not valid
-      if (StringUtils.isNotBlank(expireDate) && LocalDateTime.parse(expireDate).isBefore(now)) {
+      // expiration date might be time specified
+      if (StringUtils.isNotBlank(expireDate) && expireDate.contains("T")
+        && LocalDateTime.parse(expireDate).isBefore(now)) {
         return false;
       }
+      // or expiration date might not be time specified
+      if (StringUtils.isNotBlank(expireDate) && !expireDate.contains("T")
+        && LocalDate.parse(expireDate).isBefore(now.toLocalDate())) {
+        return false;
+      }
+
 
       // if the message is neither premature nor expired, it's valid
       return true;

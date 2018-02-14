@@ -1,6 +1,8 @@
 package edu.wisc.my.messages.model;
 
-import java.time.LocalDate;
+import edu.wisc.my.messages.time.IsoDateTimeStringAfterPredicate;
+import edu.wisc.my.messages.time.IsoDateTimeStringBeforePredicate;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -10,7 +12,6 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -319,33 +320,23 @@ public class Message {
 
   @JsonIgnore
   public boolean isValidToday() {
-    LocalDateTime now = LocalDateTime.now();
+
+    IsoDateTimeStringBeforePredicate beforeNow =
+      new IsoDateTimeStringBeforePredicate(LocalDateTime.now());
+
+    IsoDateTimeStringAfterPredicate afterNow =
+      new IsoDateTimeStringAfterPredicate(LocalDateTime.now());
 
     try {
       // if the message is premature, it is not valid.
-      // go live date might be time specified
-      if (StringUtils.isNotBlank(goLiveDate) && goLiveDate.contains("T")
-        && LocalDateTime.parse(goLiveDate).isAfter(now)) {
-        return false;
-      }
-      // or go live date might not be time specified
-      if (StringUtils.isNotBlank(goLiveDate) && !goLiveDate.contains("T")
-        && LocalDate.parse(goLiveDate).isAfter(now.toLocalDate())) {
+      if (afterNow.test(goLiveDate)) {
         return false;
       }
 
       // if the message is expired, it is not valid
-      // expiration date might be time specified
-      if (StringUtils.isNotBlank(expireDate) && expireDate.contains("T")
-        && LocalDateTime.parse(expireDate).isBefore(now)) {
+      if (beforeNow.test(expireDate)) {
         return false;
       }
-      // or expiration date might not be time specified
-      if (StringUtils.isNotBlank(expireDate) && !expireDate.contains("T")
-        && LocalDate.parse(expireDate).isBefore(now.toLocalDate())) {
-        return false;
-      }
-
 
       // if the message is neither premature nor expired, it's valid
       return true;

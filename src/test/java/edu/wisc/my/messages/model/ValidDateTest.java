@@ -18,11 +18,43 @@ public class ValidDateTest {
     }
 
     @Test
+    public void expiredDatesCanBeSpecifiedWithTime() {
+      Message message = new Message();
+      String longAgoDateTime = "1999-12-31T13:21:14";
+      message.setExpireDate(longAgoDateTime);
+      assertFalse(message.isValidToday());
+    }
+
+    @Test
+    public void futureExpiredDatesCanOmitTime() {
+      Message message = new Message();
+      String longFutureDate = "2999-12-31";
+      message.setExpireDate(longFutureDate);
+      assertTrue(message.isValidToday());
+    }
+
+    @Test
     public void filterOutNotYetLiveDates() {
         Message message = new Message();
         String futureDate = "2100-12-31";
         message.setGoLiveDate(futureDate);
         assertFalse(message.isValidToday());
+    }
+
+    @Test
+    public void pastGoLiveDatesYieldValidMessages() {
+      Message message = new Message();
+      String pastDate = "2000-04-12T12:21:21";
+      message.setGoLiveDate(pastDate);
+      assertTrue(message.isValidToday());
+    }
+
+    @Test
+    public void pastGoLiveDatesCanOmitTime() {
+      Message message = new Message();
+      String pastDate = "2000-04-12";
+      message.setGoLiveDate(pastDate);
+      assertTrue(message.isValidToday());
     }
 
     @Test

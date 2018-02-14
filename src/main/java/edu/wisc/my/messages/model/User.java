@@ -1,9 +1,8 @@
 package edu.wisc.my.messages.model;
 
-import org.apache.commons.lang.Validate;
-
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.commons.lang.Validate;
 
 public class User {
 

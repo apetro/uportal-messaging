@@ -1,20 +1,20 @@
 package edu.wisc.my.messages.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import edu.wisc.my.messages.data.MessagesFromTextFile;
 import edu.wisc.my.messages.model.AudienceFilter;
 import edu.wisc.my.messages.model.Message;
 import edu.wisc.my.messages.model.User;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
-
-import static org.mockito.Mockito.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.junit.Test;
 
 public class MessagesServiceTest {
 

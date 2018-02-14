@@ -1,20 +1,13 @@
 package edu.wisc.my.messages.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.wisc.my.messages.service.ExpiredMessagePredicate;
 import edu.wisc.my.messages.service.GoneLiveMessagePredicate;
-import edu.wisc.my.messages.time.IsoDateTimeStringAfterPredicate;
-import edu.wisc.my.messages.time.IsoDateTimeStringBeforePredicate;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.function.Predicate;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

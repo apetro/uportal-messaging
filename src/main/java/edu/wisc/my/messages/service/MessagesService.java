@@ -1,28 +1,19 @@
 package edu.wisc.my.messages.service;
 
-import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.fasterxml.jackson.databind.SerializationFeature;
 import edu.wisc.my.messages.data.MessagesFromTextFile;
+import edu.wisc.my.messages.model.Message;
 import edu.wisc.my.messages.model.User;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.function.Predicate;
-import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
-
-import edu.wisc.my.messages.model.Message;
-import edu.wisc.my.messages.model.MessageArray;
 
 @Service
 public class MessagesService {

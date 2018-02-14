@@ -1,12 +1,10 @@
 package edu.wisc.my.messages.controller;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import org.springframework.stereotype.Component;
 
 /**
  * Utility for parsing isMemberOf header.

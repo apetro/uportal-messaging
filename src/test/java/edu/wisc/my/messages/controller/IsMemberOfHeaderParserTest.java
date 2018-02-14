@@ -1,12 +1,11 @@
 package edu.wisc.my.messages.controller;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class IsMemberOfHeaderParserTest {
 

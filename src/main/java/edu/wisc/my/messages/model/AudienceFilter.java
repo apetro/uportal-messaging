@@ -1,12 +1,12 @@
 package edu.wisc.my.messages.model;
 
-import java.util.*;
-import java.util.function.Predicate;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
-import javax.validation.constraints.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * Predicate over User, answering whether the User is or is not in the Audience. <p> Currently

@@ -62,4 +62,28 @@ public class IsoDateTimeStringAfterPredicateTest {
     assertTrue(afterNow.test("2148-07-26T04:17:32"));
   }
 
+  @Test
+  public void elevensiesIsAfterBreakfastDuringAGivenDay() {
+
+    LocalDateTime breakfastTime = LocalDateTime.parse("2010-01-01T07:00:00");
+    String elevensies = "2010-01-01T11:00:00";
+
+    IsoDateTimeStringAfterPredicate afterBreakfast =
+      new IsoDateTimeStringAfterPredicate(breakfastTime);
+
+    assertTrue(afterBreakfast.test(elevensies));
+  }
+
+  @Test
+  public void breakfastIsNotAfterElevensies() {
+
+    LocalDateTime elevensies = LocalDateTime.parse("2010-01-01T11:00:00");
+    String breakfastTime = "2010-01-01T07:00:00";
+
+    IsoDateTimeStringAfterPredicate afterElevensies =
+      new IsoDateTimeStringAfterPredicate(elevensies);
+
+    assertFalse(afterElevensies.test(breakfastTime));
+  }
+
 }

@@ -61,4 +61,35 @@ public class IsoDateTimeStringBeforePredicateTest {
     assertFalse("July 26 2148 around 9a should not be before now.",
       beforeNowPredicate.test("2148-07-26T09:05:32"));
   }
+
+  /**
+   * Test that the predicate actually considers the time component of the date-time.
+   */
+  @Test
+  public void breakfastIsBeforeElevensies() {
+
+    LocalDateTime elevensies = LocalDateTime.parse("2000-01-01T11:00:00");
+    String breakfastTime = "2000-01-01T07:00:00";
+
+    IsoDateTimeStringBeforePredicate beforeElevensies =
+      new IsoDateTimeStringBeforePredicate(elevensies);
+
+    assertTrue(beforeElevensies.test(breakfastTime));
+  }
+
+  /**
+   * TEst that the predicate actually considers the time component of the date-time.
+   */
+  @Test
+  public void elevensiesIsNotBeforeBreakfast() {
+
+    LocalDateTime breakfastTime = LocalDateTime.parse("2000-01-01T07:00:00");
+    String elevensies = "2000-01-01T11:00:00";
+
+    IsoDateTimeStringBeforePredicate beforeBreakfast =
+      new IsoDateTimeStringBeforePredicate(breakfastTime);
+
+    assertFalse(beforeBreakfast.test(elevensies));
+  }
+
 }

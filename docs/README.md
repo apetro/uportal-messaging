@@ -81,8 +81,10 @@ additional access control is needed (it may not be needed), implement it at the 
 ### {*/allMessages*}
 calls:
 ``` java
-    @RequestMapping(value = "/currentMessages", method = RequestMethod.GET)
-    public @ResponseBody void currentMessages(HttpServletRequest request, HttpServletResponse response) 
+  @RequestMapping(value = "/allMessages", method = RequestMethod.GET)
+  public @ResponseBody
+  void messages(HttpServletRequest request,
+    HttpServletResponse response)
 ```
 
 returns:

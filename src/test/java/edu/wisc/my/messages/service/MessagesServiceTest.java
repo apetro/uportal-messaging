@@ -135,4 +135,37 @@ public class MessagesServiceTest {
 
     assertTrue(resultMessages.toList().isEmpty());
   }
+
+  @Test
+  public void includesUnExpiredMessages() {
+    MessagesService service = new MessagesService();
+
+    Message unexpiredMessage = new Message();
+    String longFutureDate = "2999-12-31";
+    unexpiredMessage.setExpireDate(longFutureDate);
+
+    Message preciselyUnexpiredMessage = new Message();
+    String preciseFutureDate = "2999-12-31T12:21:21";
+    preciselyUnexpiredMessage.setExpireDate(preciseFutureDate);
+
+    List<Message> unfilteredMessages = new ArrayList<>();
+    unfilteredMessages.add(unexpiredMessage);
+    unfilteredMessages.add(preciselyUnexpiredMessage);
+
+    MessagesFromTextFile messageSource = mock(MessagesFromTextFile.class);
+    when(messageSource.allMessages()).thenReturn(unfilteredMessages);
+
+    service.setMessageSource(messageSource);
+
+    User user = new User();
+
+    JSONObject result = service.filteredMessages(user);
+
+    assertNotNull(result);
+
+    JSONArray resultMessages = result.getJSONArray("messages");
+
+    assertEquals(2, resultMessages.length());
+  }
+
 }

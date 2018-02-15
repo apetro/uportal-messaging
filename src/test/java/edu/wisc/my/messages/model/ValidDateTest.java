@@ -10,15 +10,6 @@ import org.junit.Test;
 public class ValidDateTest {
 
   @Test
-  public void futureExpiredDatesCanOmitTime() {
-    Message message = new Message();
-    String longFutureDate = "2999-12-31";
-    message.setExpireDate(longFutureDate);
-    assertTrue("Future expiration date omitting time should not invalidate message",
-      message.isValidToday());
-  }
-
-  @Test
   public void filterOutNotYetLiveDates() {
     Message message = new Message();
     String futureDate = "2100-12-31";

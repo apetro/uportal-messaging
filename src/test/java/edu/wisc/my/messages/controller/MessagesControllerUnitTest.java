@@ -1,19 +1,21 @@
 package edu.wisc.my.messages.controller;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import edu.wisc.my.messages.model.User;
 import edu.wisc.my.messages.service.MessagesService;
+import java.util.HashSet;
+import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
 
 public class MessagesControllerUnitTest {
 

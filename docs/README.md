@@ -60,7 +60,8 @@ resolution server-side into this microservice so that a typical client can reque
 
 Currently filters to:
 
-+ Applicable to the current date. (Messages can have not-before and not-after dates.), AND
++ Applicable to the current local date-time. (Messages can have not-before and not-after date-times,
+specified in ISO format, as in `2018-02-14` or `2018-02-14:09:46:00`), AND
 + Applicable to the user's groups. (Messages can be limited to user groups.)
 
 Expectations:

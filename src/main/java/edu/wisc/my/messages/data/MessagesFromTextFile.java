@@ -3,6 +3,10 @@ package edu.wisc.my.messages.data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wisc.my.messages.model.Message;
 import edu.wisc.my.messages.model.MessageArray;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +14,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 
 @Repository
 public class MessagesFromTextFile {

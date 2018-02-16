@@ -1,16 +1,13 @@
 package edu.wisc.my.messages.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.apache.commons.lang.StringUtils;
-
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import edu.wisc.my.messages.service.ExpiredMessagePredicate;
+import edu.wisc.my.messages.service.GoneLiveMessagePredicate;
+import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.function.Predicate;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -318,50 +315,15 @@ public class Message {
   }
 
   @JsonIgnore
-  public boolean isValidToday(){
+  @Deprecated
+  public boolean isValidToday() {
 
-   boolean isValidToday = false;
-   Date today = new Date();
-   
-   // Placeholder date format string, 
-   // can be overridden with an application property.
-   String formatString = "yyyy-mm-dd";
+    Predicate<Message> neitherPrematureNorExpiredPredicate = new ExpiredMessagePredicate(
+      LocalDateTime.now()).negate().and(new GoneLiveMessagePredicate(
+      LocalDateTime.now()));
 
-   try{ 
-   //If there's no date specified, the message is valid.
-   if(StringUtils.isBlank(getGoLiveDate()) && 
-     StringUtils.isBlank(getExpireDate())) {
-       return true;
-     }
-
-  SimpleDateFormat defaultFormatter = new SimpleDateFormat(formatString);
-
-  String goLive = getGoLiveDate();
-  String expiration = getExpireDate();
-  
-  // If the message has no goLiveDate, we presume it to have been valid 
-  // since the beginning of time. Or 1977. Whichever came first.
-  String startDateString= (StringUtils.isNotBlank(goLive)) ? 
-       goLive : "1977-08-16";
-
-  // If the message has no expirationDate, we presume it will be valid until 
-  // the end of time. Or until we have a Y4K problem. Whichever comes first.       
-  String endDateString= (StringUtils.isNotBlank(expiration)) ?
-       expiration : "3999-12-31";
-
-   Date startDate = defaultFormatter.parse(startDateString);
-   Date endDate = defaultFormatter.parse(endDateString);
-
-    if(today.after(startDate) && today.before(endDate)) {
-      isValidToday = true;
-    }
-   } catch (Exception e) {
-     logger.warn("DATE ERROR " + this.id + " " + e.getMessage());
-     isValidToday =  false;
-   }
-
-   return isValidToday;
- }
+    return neitherPrematureNorExpiredPredicate.test(this);
+  }
 
   @Override
   public boolean equals(java.lang.Object o) {

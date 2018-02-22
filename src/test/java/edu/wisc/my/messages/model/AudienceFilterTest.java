@@ -11,7 +11,7 @@ public class AudienceFilterTest {
 
   @Test
   public void matchesWhenUserIsInAMatchingGroup() {
-    AudienceFilter filter = new AudienceFilter();
+    MessageFilter filter = new MessageFilter();
     filter.addGroupsItem("matchingGroup");
     filter.addGroupsItem("someOtherGroup");
 
@@ -26,7 +26,7 @@ public class AudienceFilterTest {
 
   @Test
   public void doesNotMatchWhenUserIsInNoMatchingGroup() {
-    AudienceFilter filter = new AudienceFilter();
+    MessageFilter filter = new MessageFilter();
     filter.addGroupsItem("someGroup");
     filter.addGroupsItem("someOtherGroup");
 

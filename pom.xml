@@ -168,8 +168,26 @@
     <groupId>org.eluder.coveralls</groupId>
     <artifactId>coveralls-maven-plugin</artifactId>
     <version>4.3.0</version>
+  </plugin>
+  <plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>cobertura-maven-plugin</artifactId>
+    <version>2.7</version>
     <configuration>
-      <repoToken>yourcoverallsprojectrepositorytoken</repoToken>
+      <formats>
+        <format>html</format>
+        <format>xml</format>
+      </formats>
+      <maxmem>256m</maxmem>
+      <!-- aggregated reports for multi-module projects -->
+      <aggregate>true</aggregate>
+      <instrumentation>
+        <excludes>
+          <!-- Exclude generated classes -->
+          <exclude>**/*_.class</exclude>
+          <exclude>**/*_.java</exclude>
+        </excludes>
+      </instrumentation>
     </configuration>
   </plugin>
 </plugins>

@@ -1,6 +1,7 @@
 package edu.wisc.my.messages.service;
 
 import edu.wisc.my.messages.model.Message;
+import edu.wisc.my.messages.model.MessageFilter;
 import edu.wisc.my.messages.time.IsoDateTimeStringBeforePredicate;
 import java.time.LocalDateTime;
 import java.util.function.Predicate;
@@ -27,7 +28,8 @@ public class ExpiredMessagePredicate
       new IsoDateTimeStringBeforePredicate(when);
 
     try {
-      return beforeWhen.test(message.getExpireDate());
+      MessageFilter filter = message.getFilter();
+      return beforeWhen.test(filter.getExpireDate());
     } catch (Exception e) {
       return true;
     }

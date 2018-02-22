@@ -28,7 +28,7 @@ public class GoneLiveMessagePredicate
     IsoDateTimeStringAfterPredicate afterWhen = new IsoDateTimeStringAfterPredicate(when);
 
     try {
-      return (!afterWhen.test(message.getGoLiveDate()));
+      return (!afterWhen.test(message.getFilter().getGoLiveDate()));
     } catch (Exception e) {
       return false;
     }

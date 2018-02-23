@@ -43,7 +43,7 @@ public class MessagesControllerUnitTest {
     when(mockRequest.getHeader("isMemberOf")).thenReturn("group1;group2;");
     when(mockService.filteredMessages(any())).thenReturn(messages);
 
-    controller.currentMessages(mockRequest);
+    controller.messages(mockRequest);
 
     verify(mockRequest).getHeader("isMemberOf");
     verify(mockParser).groupsFromHeaderValue("group1;group2;");
@@ -75,7 +75,7 @@ public class MessagesControllerUnitTest {
     groups.add("yetAnotherGroup");
     when(mockParser.groupsFromHeaderValue(anyString())).thenReturn(groups);
 
-    controller.currentMessages(mockRequest);
+    controller.messages(mockRequest);
 
     ArgumentCaptor<User> argument = ArgumentCaptor.forClass(User.class);
     verify(mockService).filteredMessages(argument.capture());
@@ -99,7 +99,7 @@ public class MessagesControllerUnitTest {
 
     when(mockService.allMessages()).thenReturn(messages);
 
-    Map<String, Object> result = controller.messages();
+    Map<String, Object> result = controller.allMessages();
 
     assertSame(messages, result.get("messages"));
   }

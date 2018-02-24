@@ -4,17 +4,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-
-import org.junit.Assert;
 import org.junit.Test;
-
-import org.springframework.mock.env.MockEnvironment;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.mock.env.MockEnvironment;
 
 public class MessagesFromTextFileTest {
 

@@ -31,12 +31,9 @@ public class MessagesFromTextFileTest {
     MessagesFromTextFile messageReader = new MessagesFromTextFile();
     messageReader.setEnv(mockEnv);
     messageReader.setResourceLoader(defaultLoader);
-    try{
-       messageReader.allMessages();
-    } catch (Exception e) {
-      Assert.fail("Invalid incoming data in MessagesFromTextFile");
-    }
-  } 
+
+    messageReader.allMessages();
+  }
   /**
    * Test that an exception encountered in preparing to read the text file results in a throw from
    * the reader.
